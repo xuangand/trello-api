@@ -5,6 +5,7 @@
  */
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
+import ApiError from '~/utils/ApiError'
 
 const createNew = async (req, res, next) => {
   //Note: mặc định chúng ta không cần phải custom message ở phía BE làm gì vì để cho FE tự validate và custom message phía BE cho đẹp
@@ -22,12 +23,16 @@ const createNew = async (req, res, next) => {
     //Chỉ định abortEarly: false để trường hợp có nhiều lỗi thì trả về tất cả lỗi (video 52)
     await correctCondition.validateAsync(req.body, { abortEarly: false })
     //Validate dữ liệu, xong xuôi hợp lệ thì cho request đi tiếp sang Controller (dòng 18 bên boardRoute.js)
-    next()
+    next() //next không có gì thì nó sẽ đưa request sang một nơi khác (cụ thể ở đây là controller ở dòng 18 bên boardRoute.js)
 
   } catch (error) {
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-      errors: new Error(error).message
-    })
+    // const errorMessage = new Error(error).message
+    // const customError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage)
+    // next(customError) //3 dòng này kết hợp tạo ra dòng ở dưới
+    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message)) //next có dữ liệu thì nó sẽ đẩy sang dòng 25 của server.js
+    // res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
+    //   errors: new Error(error).message
+    // })
   }
 }
 
