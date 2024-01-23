@@ -21,8 +21,9 @@ const createNew = async (req, res, next) => {
   try {
     //Chỉ định abortEarly: false để trường hợp có nhiều lỗi thì trả về tất cả lỗi (video 52)
     await correctCondition.validateAsync(req.body, { abortEarly: false })
-    //next()
-    res.status(StatusCodes.CREATED).json({ message: 'POST: API from Validation create new board' })
+    //Validate dữ liệu, xong xuôi hợp lệ thì cho request đi tiếp sang Controller (dòng 18 bên boardRoute.js)
+    next()
+
   } catch (error) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
       errors: new Error(error).message
