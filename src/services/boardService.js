@@ -18,7 +18,7 @@ const createNew = async (reqBody) => {
 
     //Gọi tới thằng model để xử lý lưu bản ghi newBoard vào trong database
     const createdBoard = await boardModel.createNew(newBoard)
-    console.log(createdBoard)
+    //console.log(createdBoard)
 
     //Lấy bản ghi board sau khi gọi (tùy mục đích dự án mà có cần bước này hay không)
     const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
