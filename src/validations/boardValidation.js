@@ -6,6 +6,7 @@
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
+import { BOARD_TYPE } from '~/utils/constants'
 
 const createNew = async (req, res, next) => {
   //Note: mặc định chúng ta không cần phải custom message ở phía BE làm gì vì để cho FE tự validate và custom message phía BE cho đẹp
@@ -16,7 +17,8 @@ const createNew = async (req, res, next) => {
     title: Joi.string().required().min(3).max(50).trim().strict().messages({
       'any.required': 'Title is required (custom message)'
     }),
-    description: Joi.string().required().min(3).max(256).trim().strict()
+    description: Joi.string().required().min(3).max(256).trim().strict(),
+    type: Joi.string().valid(BOARD_TYPE.PUBLIC, BOARD_TYPE.PRIVATE).required()
   })
 
   try {
