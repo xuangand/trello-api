@@ -78,7 +78,7 @@ const getDetails = async (id) => {
     ]).toArray()
     //console.log(result)
     //aggregate sẽ trả về một mảng mà ở đây ta sử dụng hàm điều kiện match _id (id thì sẽ độc nhất) và _destroy=false (file chưa bị xóa), thì cái function trên sẽ luôn chỉ trả về mảng có 1 phần tử thôi, và result ta sẽ trả ra một trong hai kết quả: nếu nó thỏa dc 2 điều kiện trên thì sẽ trả ra kết quả, còn không thì sẽ trả về json object rỗng
-    return result[0] || {}
+    return result[0] || null
   } catch (error) { throw new Error(error) }
 }
 
