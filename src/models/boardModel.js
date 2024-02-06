@@ -107,6 +107,11 @@ const update = async (boardId, updateData) => {
       }
     })
 
+    //Đối với những dữ liệu liên quan tới ObjectId thì biến đổi ở đây (sau này code dài quá thì có thể tách nó ra thành function riêng)
+    if (updateData.columnOrderIds) {
+      updateData.columnOrderIds = updateData.columnOrderIds.map(_id => (new ObjectId(_id)))
+    }
+
     const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
       { _id: new ObjectId(boardId) },
       { $set: updateData },
